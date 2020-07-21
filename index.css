@@ -1,0 +1,43 @@
+/* " must be used instead of ' for proper escaping */
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap&text= !%22#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXY[]_abcdefghijklmnopqrstuvwxyz{|}–’“”…↩。あいうえおかがきくこござしじすそただちっつてでとなにのはばひびふぶへほまみむめゃやょらりれわをんゴニホン前合回場大始学山底引復文旅日本病登私章置落薬行語谷転辞込道飲︎");
+* {
+    font-family: 'Noto Serif JP', serif;
+}
+
+.latex sub {
+    vertical-align: -0.1ex;
+    margin-left: -0.1667em;
+    margin-right: -0.025em;
+}
+
+.latex sub, .latex sup {
+    font-size: 0.9em;
+    text-transform: uppercase;
+}
+
+.latex sup {
+    font-size: 0.85em;
+    vertical-align: -0.2em;
+    margin-left: -0.26em;
+    margin-right: -0.05em;
+}
+
+#menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: slategray;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 24px;
+    z-index: 1;
+}
+
+body {
+    /* Offset keeps top of page from being hidden by menu */
+    margin-top: 80px;
+}
+
