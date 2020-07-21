@@ -1,0 +1,56 @@
+#!/bin/bash
+
+usage() {
+    echo "Usage: build [--ruby --watch]"
+}
+
+if ! options=$(getopt -o 'h,,' -l help,watch,ruby -- "$@"); then
+    usage
+    exit 1
+fi
+eval set -- "$options"
+while true; do
+    case "$1" in
+        --watch)
+            watch=1
+            ;;
+        --ruby)
+            ruby=(--lua-filter furigana.lua)
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        --)
+            break
+            ;;
+    esac
+    shift
+done
+
+build() {
+    rm -rf out
+    mkdir out
+    pandoc \
+        --standalone \
+        --include-before-body src/before.html \
+        --include-after-body src/after.html \
+        --css theme.css \
+        --css index.css \
+        -f markdown \
+        -i src/index.md \
+        -o out/index.html \
+        "${ruby[@]}"
+    ./get-used-characters.js src/index.css.in out/index.html > out/index.css
+    cp src/furigana.js out
+    cp src/theme.css out
+}
+
+if [[ "$watch" ]]; then
+    build
+    while inotifywait --quiet --quiet --event modify src/index.md; do
+        build
+    done
+else
+    build
+fi
