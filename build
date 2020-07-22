@@ -48,7 +48,7 @@ build() {
 
 if [[ "$watch" ]]; then
     build
-    while inotifywait --quiet --quiet --event modify src/index.md; do
+    while inotifywait --quiet --quiet --event modify src/; do
         build
     done
 else
