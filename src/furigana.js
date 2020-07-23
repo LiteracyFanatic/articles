@@ -1,5 +1,5 @@
 const furigana = document.getElementsByTagName("rt");
-const inputs = document.getElementsByName('furigana');
+const inputs = document.getElementsByName("furigana");
 
 function updateFurigana(furiganaType) {
     for (const rt of furigana) {
