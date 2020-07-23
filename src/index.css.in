@@ -1,5 +1,4 @@
 /* " must be used instead of ' for proper escaping */
-
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap&text=ALL_CHARACTERS");
 * {
     font-family: 'Noto Serif JP', serif;
@@ -34,10 +33,39 @@ ruby {
     width: 100%;
     background-color: slategray;
     display: flex;
-    justify-content: center;
-    text-align: center;
-    font-size: 24px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
     z-index: 1;
+    line-height: 1;
+    height: 80px;
+}
+
+#social-media-icons img {
+    margin-right: 16px;
+}
+
+#social-media-icons:last-child {
+    margin-right: 32px;
+}
+
+#social-media-icons img:hover {
+    transform: scale(1.25);
+}
+
+#furigana-form {
+    margin-left: 56px;
+}
+
+#furigana-form label {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+#furigana-form input {
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 body {

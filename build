@@ -44,6 +44,7 @@ build() {
     ./get-used-characters.js src/index.css.in out/index.html > out/index.css
     cp src/furigana.js out
     cp src/theme.css out
+    cp src/*.svg out
 }
 
 if [[ "$watch" ]]; then
