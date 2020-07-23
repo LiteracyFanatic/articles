@@ -4,48 +4,111 @@ import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 import wanakana from "wanakana";
 import kuromoji from "kuromoji";
 
-async function toRubyPieces(word) {
-    const kuroshiro = new Kuroshiro();
-    await kuroshiro.init(new KuromojiAnalyzer());
-    const segments = wanakana.tokenize(word, { detailed: true });
-    let hiragana = await kuroshiro.convert(word, {
-        mode: "okurigana",
-        to: "hiragana",
-    });
-    var x = [];
-    for (const { type, value } of segments) {
-        switch (type) {
-            case "hiragana":
-            case "katakana": {
-                if (!hiragana.startsWith(value)) {
-                    throw "This shouldn't happen.";
-                }
-                x.push({ type, rb: value, rt: value });
-                hiragana = hiragana.replace(value, "");
-                break;
+function isJapanesePunctuation(char) {
+    return char.match(new RegExp("[\u3000-\u303f]")) ? true : false;
+}
+
+// Assumptions
+// 1. There are never more than 4 tokens. This holds true for ~99% of the 22,000
+//    most frequently used Japanese words in the EDICT dictionary.
+// 2. Kanji and non-kanji tokens alternate.
+// 3. All characters in pronunciation are hiragana or punctuation. This should 
+// be true because we convert them before passing them in.
+function assignPronunciations(tokens, pronunciation) {
+    if (tokens.length > 4) {
+        throw "More than 4 tokens.";
+    }
+
+    if (
+        !Array.of(pronunciation).every(
+            c => Kuroshiro.Util.isHiragana(c) || isJapanesePunctuation(c)
+        )
+    ) {
+        throw "Pronunciation contains non-hiragana characters.";
+    }
+
+    let x = [];
+    switch (tokens.length) {
+        case 1: {
+            x.push({
+                type: tokens[0].type,
+                rb: tokens[0].value,
+                rt: pronunciation
+            });
+            break;
+        }
+        case 2: {
+            const [a, b] = tokens;
+            if (a.type === "hiragana") {
+                x.push({ type: a.type, rb: a.value, rt: a.value });
+                x.push({
+                    type: b.type,
+                    rb: b.value,
+                    rt: pronunciation.replace(a.value, "")
+                });
+            } else {
+                x.push({
+                    type: a.type,
+                    rb: a.value,
+                    rt: pronunciation.replace(new RegExp(`${b.value}$`), "")
+                });
+                x.push({ type: b.type, rb: b.value, rt: b.value });
             }
-            case "kanji": {
-                // Use lazy match to only capture first of multiple pronunciations
-                const r = new RegExp(`(${value})\\((.*?)\\)(.*)`);
-                const [_, kanji, reading, rest] = hiragana.match(r);
-                x.push({ type, rb: kanji, rt: reading });
-                hiragana = rest;
-                break;
+            break;
+        }
+        case 3: {
+            const [a, b, c] = tokens;
+            if (a.type === "hiragana") {
+                const r = new RegExp(`${a.value}(.*)${c.value}`);
+                const m = pronunciation.match(r);
+                x.push({ type: a.type, rb: a.value, rt: a.value });
+                x.push({ type: b.type, rb: b.value, rt: m[1] });
+                x.push({ type: c.type, rb: c.value, rt: c.value });
+            } else {
+                const r = new RegExp(`(.*)${b.value}(.*)`);
+                const m = pronunciation.match(r);
+                x.push({ type: a.type, rb: a.value, rt: m[1] });
+                x.push({ type: b.type, rb: b.value, rt: b.value });
+                x.push({ type: c.type, rb: c.value, rt: m[2] });
             }
-            case "japanesePunctuation": {
-                x.push({ type, rb: value, rt: "" });
-                hiragana = hiragana.replace(value, "");
-                break;
+            break;
+        }
+        case 4: {
+            const [a, b, c, d] = tokens;
+            if (a.type === "hiragana") {
+                const r = new RegExp(`${a.value}(.*)${c.value}(.*)`);
+                const m = pronunciation.match(r);
+                x.push({ type: a.type, rb: a.value, rt: a.value });
+                x.push({ type: b.type, rb: b.value, rt: m[1] });
+                x.push({ type: c.type, rb: c.value, rt: c.value });
+                x.push({ type: d.type, rb: d.value, rt: m[2] });
+            } else {
+                const r = new RegExp(`(.*)${b.value}(.*)${d.value}`);
+                const m = pronunciation.match(r);
+                x.push({ type: a.type, rb: a.value, rt: m[1] });
+                x.push({ type: b.type, rb: b.value, rt: b.value });
+                x.push({ type: c.type, rb: c.value, rt: m[2] });
+                x.push({ type: d.type, rb: d.value, rt: d.value });
             }
-            default: {
-                console.error(`Character(s) of unknown type: ${value}.`);
-                x.push({ type, rb: value, rt: "" });
-                hiragana = hiragana.replace(value, "");
-                break;
-            }
+            break;
         }
     }
     return x;
+}
+
+// Test cases for all of the possible permutations with 3 tokens
+// console.error(assignPronunciations([{ type: "kanji", value: "私" }], "わたし"));
+// console.error(assignPronunciations([{ type: "hiragana", value: "これ" }], "これ"));
+// console.error(assignPronunciations([{ type: "kanji", value: "前置" }, { type: "hiragana", value: "き" }], "まえおき"));
+// console.error(assignPronunciations([{ type: "hiragana", value: "うつ" }, { type: "kanji", value: "病" }], "うつびょう"));
+// console.error(assignPronunciations([{ type: "hiragana", value: "お" }, { type: "kanji", value: "母" }, { type: "hiragana", value: "さん" }], "おかあさん"));
+// console.error(assignPronunciations([{ type: "kanji", value: "鳴" }, { type: "hiragana", value: "き" }, { type: "kanji", value: "声" }], "なきごえ"));
+
+async function toRubyPieces(word) {
+    const kuroshiro = new Kuroshiro();
+    await kuroshiro.init(new KuromojiAnalyzer());
+    const tokens = wanakana.tokenize(word.value, { detailed: true });
+    return assignPronunciations(tokens, word.pronunciation);
 }
 
 function serializeRubyPiece({ type, rb, rt }) {
@@ -58,15 +121,40 @@ function serializeRuby(pieces) {
     return `<ruby>${pieces.map(serializeRubyPiece).join("")}</ruby>`;
 }
 
+function* mergeTokens(tokens) {
+    let i = 0;
+    while (i < tokens.length) {
+        if (tokens[i].pos === "動詞") {
+            let value = tokens[i].surface_form;
+            let pronunciation = tokens[i].pronunciation;
+            i++;
+            while (i < tokens.length && tokens[i].pos === "助動詞") {
+                value = value + tokens[i].surface_form;
+                pronunciation = pronunciation + tokens[i].pronunciation;
+                i++;
+            }
+            yield {
+                value: value,
+                pronunciation: Kuroshiro.Util.kanaToHiragna(pronunciation)
+            };
+        } else {
+            yield {
+                value: tokens[i].surface_form,
+                pronunciation: Kuroshiro.Util.kanaToHiragna(tokens[i].reading)
+            };
+            i++;
+        }
+    }
+}
+
 async function main() {
     kuromoji
         .builder({ dicPath: "./node_modules/kuromoji/dict/" })
         .build(async function (err, tokenizer) {
-            const segments = tokenizer
-                .tokenize(process.argv[2])
-                .map(t => t.surface_form);
+            const segments = tokenizer.tokenize(process.argv[2]);
+            const words = [...mergeTokens(segments)];
             const res = await Promise.all(
-                segments.map(async x => {
+                words.map(async x => {
                     const pieces = await toRubyPieces(x);
                     return serializeRuby(pieces);
                 })
