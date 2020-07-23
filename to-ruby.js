@@ -14,22 +14,35 @@ async function toRubyPieces(word) {
     });
     var x = [];
     for (const { type, value } of segments) {
-        if (type === "hiragana") {
-            if (!hiragana.startsWith(value)) {
-                throw "This shouldn't happen.";
+        switch (type) {
+            case "hiragana":
+            case "katakana": {
+                if (!hiragana.startsWith(value)) {
+                    throw "This shouldn't happen.";
+                }
+                x.push({ type, rb: value, rt: value });
+                hiragana = hiragana.replace(value, "");
+                break;
             }
-            x.push({ type, rb: value, rt: value });
-            hiragana = hiragana.replace(value, "");
-        } else if (type === "kanji") {
-            // Use lazy match to only capture first of multiple pronunciations
-            const r = new RegExp(`(${value})\\((.*?)\\)(.*)`);
-            const [_, kanji, reading, rest] = hiragana.match(r);
-            x.push({ type, rb: kanji, rt: reading });
-            hiragana = rest;
-        } else {
-            // Handle punctuation
-            x.push({ type, rb: value, rt: "" });
-            hiragana = hiragana.replace(value, "");
+            case "kanji": {
+                // Use lazy match to only capture first of multiple pronunciations
+                const r = new RegExp(`(${value})\\((.*?)\\)(.*)`);
+                const [_, kanji, reading, rest] = hiragana.match(r);
+                x.push({ type, rb: kanji, rt: reading });
+                hiragana = rest;
+                break;
+            }
+            case "japanesePunctuation": {
+                x.push({ type, rb: value, rt: "" });
+                hiragana = hiragana.replace(value, "");
+                break;
+            }
+            default: {
+                console.error(`Character(s) of unknown type: ${value}.`);
+                x.push({ type, rb: value, rt: "" });
+                hiragana = hiragana.replace(value, "");
+                break;
+            }
         }
     }
     return x;
@@ -38,7 +51,7 @@ async function toRubyPieces(word) {
 function serializeRubyPiece({ type, rb, rt }) {
     const romaji = wanakana.toRomaji(rt);
     const hiragana = type === "kanji" ? rt : "";
-    return `<rb>${rb}</rb><rt data-romaji=${romaji} data-hiragana="${hiragana}">${romaji}</rt>`;
+    return `<rb>${rb}</rb><rt data-romaji="${romaji}" data-hiragana="${hiragana}">${romaji}</rt>`;
 }
 
 function serializeRuby(pieces) {
