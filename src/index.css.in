@@ -5,6 +5,10 @@
     font-family: 'Noto Serif JP', serif;
 }
 
+ruby {
+    ruby-align: center;
+}
+
 .latex sub {
     vertical-align: -0.1ex;
     margin-left: -0.1667em;
