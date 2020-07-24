@@ -43,6 +43,17 @@ ruby {
     color: black;
 }
 
+#progress-bar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    margin: 0;
+    width: 0;
+    background-color: rebeccapurple;
+    z-index: 1;
+    height: 5px;
+}
+
 #social-media-icons img {
     margin-right: 16px;
 }
