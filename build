@@ -47,10 +47,16 @@ build() {
     cp src/*.svg out
 }
 
+browser-sync() {
+    node_modules/.bin/browser-sync "$@"
+}
+
 if [[ "$watch" ]]; then
     build
+    browser-sync out/ --no-ui --no-notify --no-open &
     while inotifywait --quiet --quiet --event modify src/; do
         build
+        browser-sync reload
     done
 else
     build
