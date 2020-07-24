@@ -45,6 +45,7 @@ build() {
     cp src/furigana.js out
     cp src/theme.css out
     cp src/*.svg out
+    cp src/*.jpg out
 }
 
 browser-sync() {
