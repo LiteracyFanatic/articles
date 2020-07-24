@@ -156,7 +156,7 @@ Let's dig into the specifics though. What have I actually been doing during all 
 
 If you're determined, learning how to recognize and pronounce all of the kana will only take a few days at most. I learned them using [duolingo](https://www.duolingo.com/). I quit using the website after a couple of months though because I was finding it less and less effective. The grammar explanations are weak, many of them entirely missing, instead preferring to rely on users in the comments section to explain the questions. The gamification aspects made it very engaging, but I eventually realized that I wasn't accomplishing as much as I thought I was and couldn't actually recall a lot of the words I had previously learned[^duolingo].
 
-| Romaji (English) | Hiragana | Katakana |  Kanji |
+| Romaji<br>(English) | Hiragana | Katakana |  Kanji |
 |:----------------:|:--------:|:--------:|:------:|
 |      nihongo     |  にほんご  |  ニホンゴ   |  日本語  |
 
