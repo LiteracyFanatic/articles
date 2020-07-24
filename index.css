@@ -1,8 +1,12 @@
 /* " must be used instead of ' for proper escaping */
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap&text= !%22#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXY[]_abcdefghijklmnopqrstuvwxyz{|}–’“”…↩。あいうえおかがきくこござしじすそただちっつてでとなにのはばひびふぶへほまみむめゃやょらりれわをんゴニホン前合回場大始学山底引復文旅日本病登私章置落薬行語谷転辞込道飲︎");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap&text= !%22#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXY[]_abcdefghijklmnopqrstuvwxyz{|}–’“”…↩。あいうえおかがきぎくぐけこごさざしじすせそただちっつてでとなにぬのはばひびふぶぷへほまみむめゃやゅょらりるれわをんウカグケゴジスセニホュリルンー世事具分前加反回大始学安定山工幸底引復悪情感技文新旅日最本正犬病登的直眠睡福私章箱終置考自落薬行術見記話語谷転辞込追道飲飼︎");
 * {
     font-family: 'Noto Serif JP', serif;
+}
+
+ruby {
+    ruby-align: center;
 }
 
 .latex sub {
@@ -30,14 +34,86 @@
     width: 100%;
     background-color: slategray;
     display: flex;
-    justify-content: center;
-    text-align: center;
-    font-size: 24px;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
     z-index: 1;
+    line-height: 1;
+    height: 80px;
+    color: black;
+}
+
+#progress-bar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    margin: 0;
+    width: 0;
+    background-color: rebeccapurple;
+    z-index: 1;
+    height: 5px;
+}
+
+#social-media-icons img {
+    margin-right: 16px;
+}
+
+#social-media-icons:last-child {
+    margin-right: 32px;
+}
+
+#social-media-icons img:hover {
+    transform: scale(1.25);
+}
+
+#furigana-form {
+    margin-left: 56px;
+}
+
+#furigana-form label {
+    display: block;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+#furigana-form input {
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
 body {
     /* Offset keeps top of page from being hidden by menu */
     margin-top: 80px;
+}
+
+.author {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.date {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 4em;
+}
+
+.subtitle {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+div.sourceCode {
+    background-color: #e9e9e9;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+@media print {
+    #menu {
+        display: none;
+    }
 }
 
