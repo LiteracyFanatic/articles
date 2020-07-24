@@ -1,4 +1,5 @@
 /* " must be used instead of ' for proper escaping */
+
 @import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP&display=swap&text=ALL_CHARACTERS");
 * {
     font-family: 'Noto Serif JP', serif;
@@ -39,6 +40,7 @@ ruby {
     z-index: 1;
     line-height: 1;
     height: 80px;
+    color: black;
 }
 
 #social-media-icons img {
@@ -71,4 +73,35 @@ ruby {
 body {
     /* Offset keeps top of page from being hidden by menu */
     margin-top: 80px;
+}
+
+.author {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.date {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 4em;
+}
+
+.subtitle {
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+div.sourceCode {
+    background-color: #e9e9e9;
+    padding: 1em;
+    border-radius: 0.5em;
+}
+
+@media print {
+    #menu {
+        display: none;
+    }
 }

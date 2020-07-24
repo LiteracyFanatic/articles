@@ -37,13 +37,14 @@ build() {
         --include-after-body src/after.html \
         --css theme.css \
         --css index.css \
+        --highlight-style kate \
         -f markdown+ascii_identifiers \
         -i src/index.md \
         -o out/index.html \
         "${ruby[@]}"
     ./get-used-characters.js src/index.css.in out/index.html > out/index.css
-    cp src/furigana.js out
-    cp src/theme.css out
+    cp src/*.js out
+    cp src/*.css out
     cp src/*.svg out
     cp src/*.jpg out
 }

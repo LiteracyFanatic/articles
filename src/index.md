@@ -1,9 +1,9 @@
 ---
-title: '[うつ病の回復への道]{.japanese} (The Road to Recovery from Depression)'
-subtitle: 'Or how Learning a New Language and Switching to Linux Helped Me Fight Back Against Mental Illness[^title]'
+title: '[うつ病の回復への道]{.japanese}<br>(The Road to Recovery from Depression)'
+subtitle: 'Or How Learning a New Language and Switching to Linux Helped Me Fight Back Against Mental Illness[^title]'
 title-meta: うつ病の回復への道 (The Road to Recovery from Depression)
 author: Jordan Cannon
-date: July 20, 2020
+date: July 24, 2020
 keywords: depression, mental health, japanese, linux, programming
 description: An in depth look at my struggle with depression and how learning new things has helped me rise above it.
 lang: en
@@ -250,7 +250,7 @@ Here's a list of ways using Linux has made my life better:
 
   ```bash
   $ uptime --pretty
-  up 5 weeks, 4 days, 3 hours, 18 minutes
+  # up 5 weeks, 4 days, 3 hours, 18 minutes
   ```
 
 - Config Files: The settings for most Linux software are controlled by human-readable configuration files stored in standardized locations. Application data and cache files also have a specified location[^windows-config]. This makes it easy to do things like keep your configuration files under version control or exclude cache data from your backups.
@@ -275,7 +275,7 @@ Here's a list of ways using Linux has made my life better:
   $ pid="$(pgrep kthread)"
   $ ps -o comm --ppid "$pid" --deselect "$pid" | sort | uniq > programs
   $ wc -l < programs
-  94
+  # 94
   ```
 
 I could keep going for a while. Seriously. I have a text file with the names of 40 more programs I wanted to talk about. I'll save those for another article though.
