@@ -5,14 +5,15 @@
   "main": "index.js",
   "type": "module",
   "dependencies": {
-    "browser-sync": "^2.26.10",
-    "eslint": "^7.5.0",
     "kuromoji": "^0.1.2",
     "kuroshiro": "^1.1.2",
     "kuroshiro-analyzer-kuromoji": "^1.1.0",
     "wanakana": "^4.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.10",
+    "eslint": "^7.5.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
