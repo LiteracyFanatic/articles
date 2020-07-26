@@ -23,13 +23,13 @@ function clamp(a, b, x) {
     }
 }
 
-function doSomething(y) {
+function updateProgressBar(y) {
     const progressBar = document.getElementById("progress-bar");
     const footnotes = document.querySelector(".footnotes");
     const articleHeight =
-        footnotes.offsetTop +
-        footnotes.getBoundingClientRect().height -
-        window.innerHeight;
+        footnotes.offsetTop
+        + footnotes.getBoundingClientRect().height
+        - window.innerHeight;
     const percent = clamp(0, 100, (100 * y) / articleHeight);
     progressBar.style.width = `${percent}%`;
 }
@@ -42,7 +42,7 @@ window.addEventListener("scroll", () => {
 
     if (!ticking) {
         window.requestAnimationFrame(() => {
-            doSomething(y);
+            updateProgressBar(y);
             ticking = false;
         });
 
