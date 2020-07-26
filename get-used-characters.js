@@ -11,6 +11,7 @@ const template = fs.readFileSync(templateFile).toString();
 const chars = Array.from(new Set(data.split(""))).sort();
 
 // Escape for CSS
+// eslint-disable-next-line newline-per-chained-call
 const escapedChars = chars.join("").replace("\"", "%22").replace("\n", "");
 
 const css = template.replace("ALL_CHARACTERS", escapedChars);
