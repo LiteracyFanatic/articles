@@ -1,6 +1,5 @@
 #!/bin/node
 import Kuroshiro from "kuroshiro";
-import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 import wanakana from "wanakana";
 import kuromoji from "kuromoji";
 
@@ -105,8 +104,6 @@ function assignPronunciations(tokens, pronunciation) {
 // console.error(assignPronunciations([{ type: "kanji", value: "鳴" }, { type: "hiragana", value: "き" }, { type: "kanji", value: "声" }], "なきごえ"));
 
 async function toRubyPieces(word) {
-    const kuroshiro = new Kuroshiro();
-    await kuroshiro.init(new KuromojiAnalyzer());
     const tokens = wanakana.tokenize(word.value, { detailed: true });
     return assignPronunciations(tokens, word.pronunciation);
 }
