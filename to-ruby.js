@@ -144,20 +144,16 @@ function *mergeTokens(tokens) {
     }
 }
 
-async function main() {
-    kuromoji
-        .builder({ dicPath: "./node_modules/kuromoji/dict/" })
-        .build(async (err, tokenizer) => {
-            const segments = tokenizer.tokenize(process.argv[2]);
-            const words = [...mergeTokens(segments)];
-            const res = await Promise.all(
-                words.map(async x => {
-                    const pieces = await toRubyPieces(x);
-                    return serializeRuby(pieces);
-                })
-            );
-            console.log(res.join(""));
-        });
-}
-
-main();
+kuromoji
+    .builder({ dicPath: "./node_modules/kuromoji/dict/" })
+    .build(async (err, tokenizer) => {
+        const segments = tokenizer.tokenize(process.argv[2]);
+        const words = [...mergeTokens(segments)];
+        const res = await Promise.all(
+            words.map(async x => {
+                const pieces = await toRubyPieces(x);
+                return serializeRuby(pieces);
+            })
+        );
+        console.log(res.join(""));
+    });
